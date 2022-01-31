@@ -5,17 +5,18 @@ namespace Trappar\AliceGenerator\Persister;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Trappar\AliceGenerator\DataStorage\ValueContext;
 
 class DoctrinePersister extends AbstractPersister
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $om;
 
-    public function __construct(ObjectManager $om)
+    public function __construct(EntityManagerInterface $om)
     {
         $this->om = $om;
     }
@@ -46,7 +47,7 @@ class DoctrinePersister extends AbstractPersister
 
         // Skip ID properties if they are not part of composite ID
         $ignore = false;
-        if ($classMetadata->isIdentifier($propName) && $classMetadata->generatorType != ClassMetadataInfo::GENERATOR_TYPE_NONE && !$classMetadata->isIdentifierComposite){
+        if ($classMetadata->isIdentifier($propName) && $classMetadata->generatorType != ClassMetadataInfo::GENERATOR_TYPE_NONE && !$classMetadata->isIdentifierComposite) {
             $ignore = true;
         }
 
@@ -65,6 +66,7 @@ class DoctrinePersister extends AbstractPersister
 
     /**
      * @param $object
+     *
      * @return bool|ClassMetadata|ClassMetadataInfo
      */
     protected function getMetadata($object)
